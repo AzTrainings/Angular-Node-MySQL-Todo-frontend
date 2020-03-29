@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -9,20 +10,25 @@ export class AppComponent {
 
   inputText = '';
 
-  todoItems  = [
-    {
-      data: 'Pick milk from shop.', date_time: '10 minutes ago'
-    },
-    {
-      data: 'Go to school.', date_time: '2 minutes ago'
-    },
-    {
-      data: 'Go to the gym.', date_time: '1 minutes ago'
-    }
+  todoItems: any  = [];
 
+  constructor(
+    private http:HttpClient
+  ){
 
-  ];
+    this.loadData();
+  }
 
+  loadData(){
+
+   this.http.get('http://localhost:3000/get_todo_list')
+   .subscribe((response)=>{
+
+    this.todoItems =  response
+
+   })
+
+  }
 
   create(){
     this.todoItems.unshift({data: this.inputText, date_time: 'Few seconds ago'});
